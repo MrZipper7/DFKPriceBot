@@ -1,3 +1,3 @@
 # DFKPriceBot
 
-A Discord bot for displaying DFK Chain gas fees
+A Discord bot for displaying JEWEL and CRYSTAL prices.
