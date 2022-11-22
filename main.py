@@ -56,13 +56,13 @@ async def priceInfo():
     crystalPrice = float(JEWEL['pair']['priceNative']) * float(CRYSTAL['pair']['priceNative'])
 
     # JEWEL Price
-    activity_string = f"JEWEL at ${round(jewelPrice, 2)}"
+    activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(10)
 
     # CRYSTAL Price
-    activity_string = f"CRYSTAL at ${round(crystalPrice, 2)}"
+    activity_string = f"CRYSTAL at ${round(crystalPrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
 client.run(os.getenv("TOKEN"))
