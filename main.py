@@ -3,8 +3,6 @@
 import os, sys, logging
 from dotenv import load_dotenv
 import discord
-# from web3 import Web3
-# from web3.middleware import geth_poa_middleware
 from discord.ext import tasks
 import asyncio, aiohttp
 
@@ -15,8 +13,6 @@ logger = logging.getLogger("DFKPriceBot")
 logger.setLevel(logging.DEBUG)
 logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 
-# rpc_address = 'https://subnets.avax.network/defi-kingdoms/dfk-chain/rpc'
-
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
@@ -24,7 +20,6 @@ client = discord.Client(intents=intents)
 async def fetch(client, params):
   url = f"https://api.dexscreener.io/latest/dex/pairs/{params['chainId']}/{params['pairAddress']}"
   async with client.get(url) as resp:
-    # assert resp.status == 200, resp.json()
     return await resp.json()
 
 async def getPrices(params):
@@ -55,7 +50,6 @@ async def on_ready():
 
 @tasks.loop(seconds=20)
 async def priceInfo():
-    # JEWEL & CRYSTAL Prices
     JEWEL = await getJEWEL()
     CRYSTAL = await getCRYSTAL()
     jewelPrice = float(JEWEL['pair']['priceNative'])
@@ -64,13 +58,11 @@ async def priceInfo():
     # JEWEL Price
     activity_string = f"JEWEL at ${round(jewelPrice, 2)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
-    print(jewelPrice)
 
     await asyncio.sleep(10)
 
     # CRYSTAL Price
     activity_string = f"CRYSTAL at ${round(crystalPrice, 2)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
-    print(crystalPrice)
 
 client.run(os.getenv("TOKEN"))
