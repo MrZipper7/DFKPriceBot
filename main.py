@@ -50,18 +50,25 @@ async def on_ready():
 
 @tasks.loop(seconds=24)
 async def priceInfo():
-    JEWEL = await getJEWEL()
-    CRYSTAL = await getCRYSTAL()
-    jewelPrice = float(JEWEL['pair']['priceNative'])
-    crystalPrice = float(JEWEL['pair']['priceNative']) * float(CRYSTAL['pair']['priceNative'])
-
     # JEWEL Price
+    try:
+        JEWEL = await getJEWEL()
+        jewelPrice = float(JEWEL['pair']['priceNative'])
+    except:
+        jewelPrice = 0
+
     activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(12)
 
     # CRYSTAL Price
+    try:
+        CRYSTAL = await getCRYSTAL()
+        crystalPrice = float(JEWEL['pair']['priceNative']) * float(CRYSTAL['pair']['priceNative'])
+    except:
+        crystalPrice = 0
+
     activity_string = f"CRYSTAL at ${round(crystalPrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
