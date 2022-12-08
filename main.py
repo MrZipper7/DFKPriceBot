@@ -54,7 +54,7 @@ async def on_ready():
     logger.info(f"{client.user} Online")
     priceInfo.start()
 
-@tasks.loop(seconds=36)
+@tasks.loop(seconds=24)
 async def priceInfo():
     # JEWEL Price
     try:
@@ -66,7 +66,7 @@ async def priceInfo():
     activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
-    await asyncio.sleep(12)
+    await asyncio.sleep(8)
 
     # CRYSTAL Price
     try:
@@ -78,7 +78,7 @@ async def priceInfo():
     activity_string = f"CRYSTAL at ${round(crystalPrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
-    await asyncio.sleep(12)
+    await asyncio.sleep(8)
 
     # JADE Price
     try:
