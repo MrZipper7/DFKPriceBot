@@ -41,6 +41,12 @@ async def getJEWEL():
     r = await getPrices(params)
     return r
 
+async def getJADE():
+    chainId = "klaytn"
+    pairAddress = "0x85DB3CC4BCDB8bffA073A3307D48Ed97C78Af0AE"
+    params = {'chainId': chainId, 'pairAddress': pairAddress}
+    r = await getPrices(params)
+    return r
 
 
 @client.event
@@ -48,12 +54,12 @@ async def on_ready():
     logger.info(f"{client.user} Online")
     priceInfo.start()
 
-@tasks.loop(seconds=24)
+@tasks.loop(seconds=36)
 async def priceInfo():
     # JEWEL Price
     try:
         JEWEL = await getJEWEL()
-        jewelPrice = float(JEWEL['pair']['priceNative'])
+        jewelPrice = float(JEWEL['pair']['priceUsd'])
     except:
         jewelPrice = 0
 
@@ -65,11 +71,23 @@ async def priceInfo():
     # CRYSTAL Price
     try:
         CRYSTAL = await getCRYSTAL()
-        crystalPrice = float(JEWEL['pair']['priceNative']) * float(CRYSTAL['pair']['priceNative'])
+        crystalPrice = float(CRYSTAL['pair']['priceUsd'])
     except:
         crystalPrice = 0
 
     activity_string = f"CRYSTAL at ${round(crystalPrice, 3)}"
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+
+    await asyncio.sleep(12)
+
+    # JADE Price
+    try:
+        JADE = await getJADE()
+        jadePrice = float(JADE['pair']['priceUsd'])
+    except:
+        jadePrice = 0
+
+    activity_string = f"JADE at ${round(jadePrice, 3)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
 client.run(os.getenv("TOKEN"))
