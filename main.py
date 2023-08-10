@@ -1,10 +1,13 @@
 # main.py
 
-import os, sys, logging
+import os
+import sys
+import logging
+import asyncio
+import aiohttp
 from dotenv import load_dotenv
 import discord
 from discord.ext import tasks
-import asyncio, aiohttp
 
 load_dotenv()
 
@@ -18,14 +21,16 @@ client = discord.Client(intents=intents)
 
 
 async def fetch(client, params):
-  url = f"https://api.dexscreener.io/latest/dex/pairs/{params['chainId']}/{params['pairAddress']}"
-  async with client.get(url) as resp:
-    return await resp.json()
+    url = f"https://api.dexscreener.io/latest/dex/pairs/{params['chainId']}/{params['pairAddress']}"
+    async with client.get(url) as resp:
+        return await resp.json()
+
 
 async def getPrices(params):
-  async with aiohttp.ClientSession() as client:
-    r = await fetch(client, params)
-    return r
+    async with aiohttp.ClientSession() as client:
+        r = await fetch(client, params)
+        return r
+
 
 async def getCRYSTAL():
     chainId = "avalanchedfk"
@@ -34,12 +39,14 @@ async def getCRYSTAL():
     r = await getPrices(params)
     return r
 
+
 async def getJEWEL():
     chainId = "avalanchedfk"
     pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
     r = await getPrices(params)
     return r
+
 
 async def getJADE():
     chainId = "klaytn"
@@ -54,13 +61,14 @@ async def on_ready():
     logger.info(f"{client.user} Online")
     priceInfo.start()
 
+
 @tasks.loop(seconds=12)
 async def priceInfo():
     # JEWEL Price
     try:
         JEWEL = await getJEWEL()
         jewelPrice = float(JEWEL['pair']['priceUsd'])
-    except:
+    except Exception:
         jewelPrice = 0
 
     activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
@@ -72,7 +80,7 @@ async def priceInfo():
     try:
         CRYSTAL = await getCRYSTAL()
         crystalPrice = float(CRYSTAL['pair']['priceUsd'])
-    except:
+    except Exception:
         crystalPrice = 0
 
     activity_string = f"CRYSTAL at ${round(crystalPrice, 3)}"
@@ -84,7 +92,7 @@ async def priceInfo():
     try:
         JADE = await getJADE()
         jadePrice = float(JADE['pair']['priceUsd'])
-    except:
+    except Exception:
         jadePrice = 0
 
     activity_string = f"JADE at ${round(jadePrice, 3)}"
