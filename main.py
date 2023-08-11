@@ -83,7 +83,7 @@ async def priceInfo():
     except Exception:
         crystalPrice = 0
 
-    activity_string = f"CRYSTAL at ${round(crystalPrice, 3)}"
+    activity_string = f"CRYSTAL at ${round(crystalPrice, 4)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(4)
@@ -95,7 +95,7 @@ async def priceInfo():
     except Exception:
         jadePrice = 0
 
-    activity_string = f"JADE at ${round(jadePrice, 3)}"
+    activity_string = f"JADE at ${round(jadePrice, 4)}"
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
 client.run(os.getenv("TOKEN"))
