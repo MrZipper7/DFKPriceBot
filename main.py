@@ -20,13 +20,19 @@ intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
 
-async def fetch(client, params):
+async def fetch_dexscreener(client, params):
     url = f"https://api.dexscreener.io/latest/dex/pairs/{params['chainId']}/{params['pairAddress']}"
     async with client.get(url) as resp:
         return await resp.json()
 
 
-async def getPrices(params):
+async def fetch_cmc(client, params):
+    url = f"https://api.coinmarketcap.com/dexer/v3/dexer/pair-info?dexer-platform-name={params['chainId']}&address={params['pairAddress']}"
+    async with client.get(url) as resp:
+        return await resp.json()
+
+
+async def getPrices(params, fetch):
     async with aiohttp.ClientSession() as client:
         r = await fetch(client, params)
         return r
@@ -36,7 +42,7 @@ async def getCRYSTAL():
     chainId = "avalanchedfk"
     pairAddress = "0x48658e69d741024b4686c8f7b236d3f1d291f386"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params)
+    r = await getPrices(params, fetch_dexscreener)
     return r
 
 
@@ -44,7 +50,7 @@ async def getJEWEL():
     chainId = "avalanchedfk"
     pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params)
+    r = await getPrices(params, fetch_dexscreener)
     return r
 
 
@@ -52,7 +58,7 @@ async def getJADE():
     chainId = "klaytn"
     pairAddress = "0x85DB3CC4BCDB8bffA073A3307D48Ed97C78Af0AE"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params)
+    r = await getPrices(params, fetch_cmc)
     return r
 
 
@@ -91,7 +97,8 @@ async def priceInfo():
     # JADE Price
     try:
         JADE = await getJADE()
-        jadePrice = float(JADE['pair']['priceUsd'])
+        # jadePrice = float(JADE['pair']['priceUsd'])
+        jadePrice = float(JADE['data']['priceQuote']) * jewelPrice
     except Exception:
         jadePrice = 0
 
