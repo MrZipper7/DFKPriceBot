@@ -56,7 +56,7 @@ async def getJEWEL():
 
 async def getJADE():
     chainId = "klaytn"
-    pairAddress = "0x85DB3CC4BCDB8bffA073A3307D48Ed97C78Af0AE"
+    pairAddress = "0x509d49AC90EF180363269E35b363E10b95c983AF"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
     r = await getPrices(params, fetch_cmc)
     return r
@@ -97,8 +97,10 @@ async def priceInfo():
     # JADE Price
     try:
         JADE = await getJADE()
+        print(JADE)
         # jadePrice = float(JADE['pair']['priceUsd'])
-        jadePrice = float(JADE['data']['priceQuote']) * jewelPrice
+        jadePrice = float(JADE['data']['priceUsd'])
+        # jadePrice = float(JADE['data']['priceQuote']) * jewelPrice
     except Exception:
         jadePrice = 0
 
