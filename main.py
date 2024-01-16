@@ -97,7 +97,6 @@ async def priceInfo():
     # JADE Price
     try:
         JADE = await getJADE()
-        print(JADE)
         # jadePrice = float(JADE['pair']['priceUsd'])
         jadePrice = float(JADE['data']['priceUsd'])
         # jadePrice = float(JADE['data']['priceQuote']) * jewelPrice
