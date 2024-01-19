@@ -39,18 +39,20 @@ async def getPrices(params, fetch):
 
 
 async def getCRYSTAL():
-    chainId = "avalanchedfk"
+    chainId = "avalanche%20dfk"
     pairAddress = "0x48658e69d741024b4686c8f7b236d3f1d291f386"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params, fetch_dexscreener)
+    # r = await getPrices(params, fetch_dexscreener)
+    r = await getPrices(params, fetch_cmc)
     return r
 
 
 async def getJEWEL():
-    chainId = "avalanchedfk"
+    chainId = "avalanche%20dfk"
     pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params, fetch_dexscreener)
+    # r = await getPrices(params, fetch_dexscreener)
+    r = await getPrices(params, fetch_cmc)
     return r
 
 
@@ -73,24 +75,28 @@ async def priceInfo():
     # JEWEL Price
     try:
         JEWEL = await getJEWEL()
-        jewelPrice = float(JEWEL['pair']['priceUsd'])
+        # jewelPrice = float(JEWEL['pair']['priceUsd'])
+        jewelPrice = float(JEWEL['data']['priceUsd'])
     except Exception:
         jewelPrice = 0
 
     activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+    print(activity_string)
+    # await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(3)
 
     # CRYSTAL Price
     try:
         CRYSTAL = await getCRYSTAL()
-        crystalPrice = float(CRYSTAL['pair']['priceUsd'])
+        # crystalPrice = float(CRYSTAL['pair']['priceUsd'])
+        crystalPrice = float(CRYSTAL['data']['priceUsd'])
     except Exception:
         crystalPrice = 0
 
     activity_string = f"CRYSTAL at ${round(crystalPrice, 4)}"
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+    print(activity_string)
+    # await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(3)
 
@@ -104,6 +110,7 @@ async def priceInfo():
         jadePrice = 0
 
     activity_string = f"JADE at ${round(jadePrice, 4)}"
-    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+    print(activity_string)
+    # await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
 client.run(os.getenv("TOKEN"))
