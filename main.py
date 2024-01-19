@@ -81,8 +81,8 @@ async def priceInfo():
         jewelPrice = 0
 
     activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
-    print(activity_string)
-    # await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+    # print(activity_string)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(3)
 
@@ -95,8 +95,8 @@ async def priceInfo():
         crystalPrice = 0
 
     activity_string = f"CRYSTAL at ${round(crystalPrice, 4)}"
-    print(activity_string)
-    # await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+    # print(activity_string)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
     await asyncio.sleep(3)
 
