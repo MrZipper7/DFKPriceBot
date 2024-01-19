@@ -110,7 +110,7 @@ async def priceInfo():
         jadePrice = 0
 
     activity_string = f"JADE at ${round(jadePrice, 4)}"
-    print(activity_string)
-    # await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
+    # print(activity_string)
+    await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
 client.run(os.getenv("TOKEN"))
