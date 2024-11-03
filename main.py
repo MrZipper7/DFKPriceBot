@@ -57,7 +57,7 @@ async def getJEWEL():
 
 
 async def getJADE():
-    chainId = "klaytn"
+    chainId = "kaia"
     pairAddress = "0x509d49AC90EF180363269E35b363E10b95c983AF"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
     r = await getPrices(params, fetch_cmc)
