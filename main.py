@@ -45,7 +45,7 @@ async def getPrices(params, fetch):
 
 
 async def getCRYSTAL():
-    chainId = "avalanche%20dfk"
+    chainId = "avalanchedfk"
     pairAddress = "0x48658e69d741024b4686c8f7b236d3f1d291f386"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
     r = await getPrices(params, fetch_dexscreener)
@@ -54,7 +54,7 @@ async def getCRYSTAL():
 
 
 async def getJEWEL():
-    chainId = "avalanche%20dfk"
+    chainId = "avalanchedfk"
     pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
     r = await getPrices(params, fetch_dexscreener)
