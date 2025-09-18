@@ -32,6 +32,12 @@ async def fetch_cmc(client, params):
         return await resp.json()
 
 
+async def fetch_gecko(client, params):
+    url = f"https://app.geckoterminal.com/api/p1/{params['chainId']}/pools/{params['pairAddress']}"
+    async with client.get(url) as resp:
+        return await resp.json()
+
+
 async def getPrices(params, fetch):
     async with aiohttp.ClientSession() as client:
         r = await fetch(client, params)
@@ -42,8 +48,8 @@ async def getCRYSTAL():
     chainId = "avalanche%20dfk"
     pairAddress = "0x48658e69d741024b4686c8f7b236d3f1d291f386"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    # r = await getPrices(params, fetch_dexscreener)
-    r = await getPrices(params, fetch_cmc)
+    r = await getPrices(params, fetch_dexscreener)
+    # r = await getPrices(params, fetch_cmc)
     return r
 
 
@@ -51,8 +57,8 @@ async def getJEWEL():
     chainId = "avalanche%20dfk"
     pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    # r = await getPrices(params, fetch_dexscreener)
-    r = await getPrices(params, fetch_cmc)
+    r = await getPrices(params, fetch_dexscreener)
+    # r = await getPrices(params, fetch_cmc)
     return r
 
 
@@ -60,7 +66,7 @@ async def getJADE():
     chainId = "kaia"
     pairAddress = "0x509d49AC90EF180363269E35b363E10b95c983AF"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params, fetch_cmc)
+    r = await getPrices(params, fetch_gecko)
     return r
 
 
@@ -75,8 +81,8 @@ async def priceInfo():
     # JEWEL Price
     try:
         JEWEL = await getJEWEL()
-        # jewelPrice = float(JEWEL['pair']['priceUsd'])
-        jewelPrice = float(JEWEL['data']['priceUsd'])
+        jewelPrice = float(JEWEL['pair']['priceUsd'])
+        # jewelPrice = float(JEWEL['data']['priceUsd'])
     except Exception:
         jewelPrice = 0
 
@@ -89,8 +95,8 @@ async def priceInfo():
     # CRYSTAL Price
     try:
         CRYSTAL = await getCRYSTAL()
-        # crystalPrice = float(CRYSTAL['pair']['priceUsd'])
-        crystalPrice = float(CRYSTAL['data']['priceUsd'])
+        crystalPrice = float(CRYSTAL['pair']['priceUsd'])
+        # crystalPrice = float(CRYSTAL['data']['priceUsd'])
     except Exception:
         crystalPrice = 0
 
@@ -104,8 +110,9 @@ async def priceInfo():
     try:
         JADE = await getJADE()
         # jadePrice = float(JADE['pair']['priceUsd'])
-        jadePrice = float(JADE['data']['priceUsd'])
+        # jadePrice = float(JADE['data']['priceUsd'])
         # jadePrice = float(JADE['data']['priceQuote']) * jewelPrice
+        jadePrice = float(JADE['data']['attributes']['price_in_usd'])  # GeckoTerminal
     except Exception:
         jadePrice = 0
 
