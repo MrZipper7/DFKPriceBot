@@ -19,6 +19,8 @@ logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
+JADE_ADDRESS = "0xb3f5867e277798b50ba7a71c0b24fdca03045edf"
+
 
 async def fetch_dexscreener(client, params):
     url = f"https://api.dexscreener.io/latest/dex/pairs/{params['chainId']}/{params['pairAddress']}"
@@ -33,7 +35,7 @@ async def fetch_cmc(client, params):
 
 
 async def fetch_gecko(client, params):
-    url = f"https://app.geckoterminal.com/api/p1/{params['chainId']}/pools/{params['pairAddress']}"
+    url = f"https://api.geckoterminal.com/api/v2/simple/networks/{params['chainId']}/token_price/{params['tokenAddress']}"
     async with client.get(url) as resp:
         return await resp.json()
 
@@ -64,8 +66,9 @@ async def getJEWEL():
 
 async def getJADE():
     chainId = "kaia"
-    pairAddress = "0x509d49AC90EF180363269E35b363E10b95c983AF"
-    params = {'chainId': chainId, 'pairAddress': pairAddress}
+    # pairAddress = "0x509d49AC90EF180363269E35b363E10b95c983AF"
+    tokenAddress = JADE_ADDRESS
+    params = {'chainId': chainId, 'tokenAddress': tokenAddress}
     r = await getPrices(params, fetch_gecko)
     return r
 
@@ -83,7 +86,8 @@ async def priceInfo():
         JEWEL = await getJEWEL()
         jewelPrice = float(JEWEL['pair']['priceUsd'])
         # jewelPrice = float(JEWEL['data']['priceUsd'])
-    except Exception:
+    except Exception as e:
+        logger.error(f"Error fetching JEWEL price: {e}")
         jewelPrice = 0
 
     activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
@@ -112,8 +116,9 @@ async def priceInfo():
         # jadePrice = float(JADE['pair']['priceUsd'])
         # jadePrice = float(JADE['data']['priceUsd'])
         # jadePrice = float(JADE['data']['priceQuote']) * jewelPrice
-        jadePrice = float(JADE['data']['attributes']['price_in_usd'])  # GeckoTerminal
-    except Exception:
+        jadePrice = float(JADE['data']['attributes']['token_prices'][JADE_ADDRESS])  # GeckoTerminal
+    except Exception as e:
+        logger.error(f"Error fetching JADE price: {e}")
         jadePrice = 0
 
     activity_string = f"JADE at ${round(jadePrice, 4)}"
