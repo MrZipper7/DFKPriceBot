@@ -96,7 +96,7 @@ async def priceInfo():
         logger.error(f"Error fetching JEWEL price: {e}")
         jewelPrice = 0
 
-    activity_string = f"JEWEL at ${round(jewelPrice, 3)}"
+    activity_string = f"JEWEL at ${round(jewelPrice, 4)}"
     # print(activity_string)
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
@@ -128,7 +128,7 @@ async def priceInfo():
         logger.error(f"Error fetching JADE price: {e}")
         jadePrice = 0
 
-    activity_string = f"JADE at ${round(jadePrice, 4)}"
+    activity_string = f"JADE at ${round(jadePrice, 5)}"
     # print(activity_string)
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
