@@ -96,7 +96,7 @@ async def priceInfo():
         logger.error(f"Error fetching JEWEL price: {e}")
         jewelPrice = 0
 
-    activity_string = f"JEWEL at ${round(jewelPrice, 4)}"
+    activity_string = f"JEWEL at ${round(jewelPrice, 5)}"
     # print(activity_string)
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
@@ -111,7 +111,7 @@ async def priceInfo():
     except Exception:
         crystalPrice = 0
 
-    activity_string = f"CRYSTAL at ${round(crystalPrice, 4)}"
+    activity_string = f"CRYSTAL at ${round(crystalPrice, 5)}"
     # print(activity_string)
     await client.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=activity_string))
 
