@@ -19,6 +19,8 @@ logging.basicConfig(level=logging.INFO, format=log_format, stream=sys.stdout)
 intents = discord.Intents.default()
 client = discord.Client(intents=intents)
 
+JEWEL_ADDRESS_AVAX = "0x997ddaa07d716995de90577c123db411584e5e46"
+CRYSTAL_ADDRESS_DFK = "0x04b9da42306b023f3572e106b11d82aad9d32ebb"
 JADE_ADDRESS = "0xb3f5867e277798b50ba7a71c0b24fdca03045edf"
 
 
@@ -47,20 +49,23 @@ async def getPrices(params, fetch):
 
 
 async def getCRYSTAL():
-    chainId = "avalanchedfk"
-    pairAddress = "0x48658e69d741024b4686c8f7b236d3f1d291f386"
-    params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params, fetch_dexscreener)
-    # r = await getPrices(params, fetch_cmc)
+    # chainId = "avalanchedfk"
+    # pairAddress = "0x48658e69d741024b4686c8f7b236d3f1d291f386"
+    chainId = "dfk"
+    tokenAddress = CRYSTAL_ADDRESS_DFK
+    params = {'chainId': chainId, 'tokenAddress': tokenAddress}
+    r = await getPrices(params, fetch_gecko)
     return r
 
 
 async def getJEWEL():
-    chainId = "avalanchedfk"
-    pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
-    params = {'chainId': chainId, 'pairAddress': pairAddress}
-    r = await getPrices(params, fetch_dexscreener)
-    # r = await getPrices(params, fetch_cmc)
+    # chainId = "avalanchedfk"
+    # pairAddress = "0xCF329b34049033dE26e4449aeBCb41f1992724D3"
+    # params = {'chainId': chainId, 'pairAddress': pairAddress}
+    chainId = "avax"
+    tokenAddress = JEWEL_ADDRESS_AVAX
+    params = {'chainId': chainId, 'tokenAddress': tokenAddress}
+    r = await getPrices(params, fetch_gecko)
     return r
 
 
@@ -84,8 +89,9 @@ async def priceInfo():
     # JEWEL Price
     try:
         JEWEL = await getJEWEL()
-        jewelPrice = float(JEWEL['pair']['priceUsd'])
+        # jewelPrice = float(JEWEL['pair']['priceUsd'])
         # jewelPrice = float(JEWEL['data']['priceUsd'])
+        jewelPrice = float(JEWEL['data']['attributes']['token_prices'][JEWEL_ADDRESS_AVAX])  # GeckoTerminal
     except Exception as e:
         logger.error(f"Error fetching JEWEL price: {e}")
         jewelPrice = 0
@@ -99,8 +105,9 @@ async def priceInfo():
     # CRYSTAL Price
     try:
         CRYSTAL = await getCRYSTAL()
-        crystalPrice = float(CRYSTAL['pair']['priceUsd'])
+        # crystalPrice = float(CRYSTAL['pair']['priceUsd'])
         # crystalPrice = float(CRYSTAL['data']['priceUsd'])
+        crystalPrice = float(CRYSTAL['data']['attributes']['token_prices'][CRYSTAL_ADDRESS_DFK])  # GeckoTerminal
     except Exception:
         crystalPrice = 0
 
