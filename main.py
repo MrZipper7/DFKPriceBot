@@ -59,7 +59,7 @@ async def getCRYSTAL():
 
 
 async def getJEWEL():
-    chainId = "avalanched"
+    chainId = "avalanche"
     pairAddress = "0xa0590094ffbd30cc53ddc67240b308951efe8121"
     params = {'chainId': chainId, 'pairAddress': pairAddress}
     # chainId = "avax"
